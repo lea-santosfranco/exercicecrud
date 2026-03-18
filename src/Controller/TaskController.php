@@ -2,10 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Task;
 use App\Repository\TaskRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Entity\TaskType;
 
 final class TaskController extends AbstractController
 {
@@ -25,13 +29,32 @@ final class TaskController extends AbstractController
     }
 
     #[Route('/tasks/create', name: 'app_task_create', methods: ['GET', 'POST'])]
-    public function create(): Response
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
-
+        // On peut créer une nouvelle tâche en instanciant la classe Task. Cela crée un nouvel objet Task qui peut être utilisé pour définir les propriétés de la tâche avant de l'enregistrer dans la base de données.
+        $task = new Task();
+        // On crée le formulaire (lié à l'objet vide)
+        $form = $this->createForm(TaskType::class, $task);
+        // On demande au formulaire de lire la requête
+        $form->handleRequest($request);
+        // Si le formulaire est soumis et valide
+        if ($form->isSubmitted() && $form->isValid()) {
+            // On demande à l'EntityManager de préparer l'objet
+            $entityManager->persist($task);
+            // On exécute réellement la reqûete
+            $entityManager->flush();
+            // On redirige vers la liste des tâches
+            return $this->redirectToRoute('app_task');
     }
 
-    #[Route('/tasks/{id}/edit', name: 'app_task_edit', methods: ['GET', 'POST'])]
-    public function edit(int $id): Response
-    {
+        // On affiche le formulaire
+        return $this->render('task/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    // #[Route('/tasks/{id}/edit', name: 'app_task_edit', methods: ['GET', 'POST'])]
+    // public function edit(int $id): Response
+    // {
 }
-}
+// }
