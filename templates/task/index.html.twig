@@ -1,37 +1,83 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1 class="mb-4">Liste des tâches</h1>
-
-    {# Boutons pour les filtres #}
-    <div class="mb-4">
-        <a href="{{ path('app_task') }}" class="btn btn-primary">Toutes</a>
-        <a href="{{ path('app_task_todo') }}" class="btn btn-warning">À faire</a>
-        <a href="{{ path('app_task_done') }}" class="btn btn-success">Terminées</a>
-    </div>
-
     {# Style bootstrap #}
-    <ul class="list-group mb-4">
-        {% for task in tasks %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                
-                <div>
-                    <span class="fs-5 me-2">
-                        {% if task.isDone %} ✅ {% else %} ⬜ {% endif %}
-                    </span>
-                    
-                    <strong>{{ task.title }}</strong> 
-                    <span class="text-muted ms-2"> - {{ task.description }}</span>
-                </div>
-                <a href="{{ path('app_task_edit', {'id': task.id}) }}" class="btn btn-sm btn-outline-secondary">Modifier</a>
-                
-            </li>
-        {% else %}
-            <li class="list-group-item text-muted">Aucune tâche trouvée.</li>
-        {% endfor %}
-    </ul>
+    <style>
+        .bg-nature-green { background-color: #6b8e23 !important; color: white; } /* Vert olive/sauge */
+        .bg-nature-beige { background-color: #f9f6f0 !important; } /* Beige très clair pour le fond de la carte */
+        
+        /* Boutons */
+        .btn-nature-main { background-color: #8c7355; color: white; border: none; transition: 0.3s; } /* Marron clair */
+        .btn-nature-main:hover { background-color: #6b573f; color: white; }
+        
+        .btn-nature-outline { border: 2px solid #8c7355; color: #8c7355; background: white; transition: 0.3s; }
+        .btn-nature-outline:hover { background-color: #8c7355; color: white; }
 
-    {# Bouton pour ajouter une tache #}
-    <a href="{{ path('app_task_create') }}" class="btn btn-success">+ Ajouter une tâche</a>
-    
+        .btn-nature-green-btn { background-color: #6b8e23; color: white; border: none; transition: 0.3s; }
+        .btn-nature-green-btn:hover { background-color: #55711b; color: white; }
+    </style>
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8 col-lg-6">
+
+            {# La carte avec un fond beige clair #}
+            <div class="card shadow-lg border-0 rounded-4 bg-nature-beige">
+                
+                {# L'en-tête en vert nature #}
+                <div class="card-header bg-nature-green text-center py-3" style="border-top-left-radius: 1rem; border-top-right-radius: 1rem;">
+                    <h1 class="h4 mb-0 fw-bold">🌿 Ma To-Do List</h1>
+                </div>
+
+                <div class="card-body p-4">
+
+                    {# Les boutons de filtres (couleurs) #}
+                    <div class="d-flex justify-content-center mb-4 gap-2">
+                        <a href="{{ path('app_task') }}" class="btn btn-nature-main rounded-pill px-3">Toutes</a>
+                        <a href="{{ path('app_task_todo') }}" class="btn btn-nature-outline rounded-pill px-3">À faire</a>
+                        <a href="{{ path('app_task_done') }}" class="btn btn-nature-green-btn rounded-pill px-3">Terminées</a>
+                    </div>
+
+                    {# La liste des tâches #}
+                    <ul class="list-group mb-4 shadow-sm rounded-3">
+                        {% for task in tasks %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center py-3 border-light">
+                                
+                                <div>
+                                    <span class="fs-5 me-2">
+                                        {% if task.isDone %} 🌱 {% else %} 🍂 {% endif %}
+                                    </span>
+                                    
+                                    <strong class="text-dark">{{ task.title }}</strong> 
+                                    <span class="text-muted ms-2" style="font-size: 0.9em;">- {{ task.description }}</span>
+                                </div>
+
+                                <a href="{{ path('app_task_edit', {'id': task.id}) }}" class="btn btn-sm btn-light border rounded-pill text-secondary">Modifier</a>
+                
+                                {# Bouton Supprimer #}
+                                <a href="{{ path('app_task_delete', {'id': task.id}) }}" 
+                                class="btn btn-sm btn-outline-danger rounded-pill ms-1"
+                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')">
+                                Supprimer
+                                </a>
+                                
+                            </li>
+                        {% else %}
+                            <li class="list-group-item text-center text-muted py-4 bg-transparent border-0">
+                                Aucune tâche trouvée !
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    {# Le bouton d'ajout d'une tâche #}
+                    <div class="text-center mt-2">
+                        <a href="{{ path('app_task_create') }}" class="btn btn-nature-green-btn rounded-pill px-4 py-2 shadow-sm fw-bold">
+                            + Ajouter une tâche
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
 {% endblock %}
