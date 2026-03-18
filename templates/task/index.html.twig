@@ -1,21 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Liste des tâches</h1>
+    <h1 class="mb-4">Liste des tâches</h1>
 
-    <ul>
-        {% for task in tasks%}
-            <li>
-                {# On affiche le titre de la tâche en utilisant {{ task.title }}. Cela suppose que chaque objet tâche a une propriété ou une méthode appelée title qui contient le titre de la tâche. En affichant {{ task.title }}, on affiche le titre de chaque tâche dans la liste. #}
-                {{ task.title }}
-                {{task.description}}
-                {# Lien pour la route edit #}
-                <a href="{{ path('app_task_edit', {'id': task.id}) }}">Modifier</a>
+    {# Boutons pour les filtres #}
+    <div class="mb-4">
+        <a href="{{ path('app_task') }}" class="btn btn-primary">Toutes</a>
+        <a href="{{ path('app_task_todo') }}" class="btn btn-warning">À faire</a>
+        <a href="{{ path('app_task_done') }}" class="btn btn-success">Terminées</a>
+    </div>
+
+    {# Style bootstrap #}
+    <ul class="list-group mb-4">
+        {% for task in tasks %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                
+                <div>
+                    <span class="fs-5 me-2">
+                        {% if task.isDone %} ✅ {% else %} ⬜ {% endif %}
+                    </span>
+                    
+                    <strong>{{ task.title }}</strong> 
+                    <span class="text-muted ms-2"> - {{ task.description }}</span>
+                </div>
+                <a href="{{ path('app_task_edit', {'id': task.id}) }}" class="btn btn-sm btn-outline-secondary">Modifier</a>
+                
             </li>
         {% else %}
-            <li>Aucune tâche trouvée.</li>
+            <li class="list-group-item text-muted">Aucune tâche trouvée.</li>
         {% endfor %}
     </ul>
 
-    <a href="{{path('app_task_create')}}" >Ajouter une tâche</a>
+    {# Bouton pour ajouter une tache #}
+    <a href="{{ path('app_task_create') }}" class="btn btn-success">+ Ajouter une tâche</a>
+    
 {% endblock %}
