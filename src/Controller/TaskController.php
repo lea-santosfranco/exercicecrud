@@ -60,11 +60,28 @@ final class TaskController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            return $this->redirectToRoute('task-index');
+            return $this->redirectToRoute('app_task');
         }
         return $this->render('task/edit.html.twig',[
             'form' => $form->createView(),
             'task' => $task,
         ]);
 }
+
+    #[Route('/tasks/todo', name: 'app_task_todo', methods : ['GET'])]
+    public function todo(TaskRepository $taskRepository): Response
+    {
+        return $this->render('task/index.html.twig', [
+            'tasks' => $taskRepository->findBy(['isDone' => false]),
+        ]);
+    }
+
+    #[Route('/tasks/done', name: 'app_task_done', methods : ['GET'])]
+    public function done(TaskRepository $taskRepository): Response
+    {
+        return $this->render('task/index.html.twig', [
+            'tasks' => $taskRepository->findBy(['isDone' => true]),
+        ]);
+    }
+
 }

@@ -1,14 +1,14 @@
-{% {% extends 'base.html.twig' %}%}
+{% extends 'base.html.twig' %}
 
 {% block body%}
     <h1>Modifier la tâche : {{ task.title }}</h1>
 
-    {{{{ form_start(form) }}}}
-    {{{{ form_widget(form) }}}}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
     <button type="submit" class="btn btn-success mt-3">Mettre à jour</button>
 
-    {{{{ form_end(form) }}}}
+    {{ form_end(form) }}
 
     <br>
-    <a href="{{path('task_index')}}">Annuler et retourner à la liste</a>
+    <a href="{{path('app_task')}}">Annuler et retourner à la liste</a>
     {% endblock %}
