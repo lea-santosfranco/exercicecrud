@@ -9,12 +9,12 @@
                 {# On affiche le titre de la tâche en utilisant {{ task.title }}. Cela suppose que chaque objet tâche a une propriété ou une méthode appelée title qui contient le titre de la tâche. En affichant {{ task.title }}, on affiche le titre de chaque tâche dans la liste. #}
                 {{ task.title }}
                 {# Lien pour la route edit #}
-                <a href="{{path('task_edit', {'id': task.id})}}">Modifier</a>
+                <a href="{{ path('task_edit', {'id': task.id}) }}">Modifier</a>
             </li>
         {% else %}
             <li>Aucune tâche trouvée.</li>
         {% endfor %}
     </ul>
 
-    {# <a href="{{path('task_new')}}" >Ajouter une tâche</a> #}
+    <a href="{{path('task_new')}}" >Ajouter une tâche</a>
 {% endblock %}
