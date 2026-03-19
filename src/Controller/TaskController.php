@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class TaskController extends AbstractController
 {
-    #[Route('/task', name: 'app_task', methods: ['GET'])]
+    #[Route('/', name: 'app_task', methods: ['GET'])]
     public function index(TaskRepository $taskRepository): Response
     {
             // 1. Récupère toutes les tâches via le TaskRepository
